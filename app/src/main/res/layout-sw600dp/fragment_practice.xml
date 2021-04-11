@@ -1,0 +1,100 @@
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:fitsSystemWindows="true"
+    tools:context="com.nexm.iupacnomenclatureclassxii.fragments.PracticeFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- TODO: Update blank fragment layout -->
+        <TextView
+            android:id="@+id/practice_rule_textView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/rule_background_colour"
+            android:gravity="center|clip_horizontal"
+            android:padding="24dp"
+            android:text="@string/hello_blank_fragment"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+
+        <ImageView
+            android:id="@+id/practice_imageview1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="32dp"
+
+            android:adjustViewBounds="true"
+            android:padding="32dp"
+            app:srcCompat="@drawable/acid_t_30q" />
+
+        <TextView
+            android:id="@+id/practice_rule_textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/rule_background_colour"
+            android:drawablePadding="10dp"
+            android:gravity="center|clip_horizontal"
+            android:padding="24dp"
+            android:text="@string/hello_blank_fragment"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/practice_imageview2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="32dp"
+
+            android:adjustViewBounds="true"
+            android:padding="32dp"
+            app:srcCompat="@drawable/acid_t_30q" />
+
+        <TextView
+            android:id="@+id/practice_rule_textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/rule_background_colour"
+            android:drawablePadding="10dp"
+            android:gravity="center|clip_horizontal"
+            android:padding="24dp"
+            android:text="@string/hello_blank_fragment"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/practice_imageview3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="32dp"
+
+            android:adjustViewBounds="true"
+            android:padding="32dp"
+            app:srcCompat="@drawable/acid_t_30q" />
+
+        <TextView
+            android:id="@+id/practice_continue"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="24dp"
+            android:background="@color/colorAccent"
+            android:paddingLeft="40dp"
+            android:paddingTop="20dp"
+            android:paddingRight="40dp"
+            android:paddingBottom="20dp"
+            android:text="Continue"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

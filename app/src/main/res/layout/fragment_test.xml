@@ -1,0 +1,176 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nested"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    tools:context="com.nexm.iupacnomenclatureclassxii.fragments.TestFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="40dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/test_q_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:text="Longest carbon chain in following compound is ..."
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/test_image"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_marginLeft="32dp"
+                android:layout_marginRight="32dp"
+                android:layout_marginBottom="16dp"
+                android:adjustViewBounds="false"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/alk_t_19q" />
+
+            <TextView
+                android:id="@+id/test_option1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@color/tab_default"
+                android:paddingStart="8dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="12dp"
+                android:text="TextView"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:id="@+id/test_option2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="16dp"
+                android:background="@color/tab_default"
+                android:paddingStart="8dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="12dp"
+                android:text="TextView"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:id="@+id/test_option_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="16dp"
+                android:background="@color/tab_default"
+                android:paddingStart="8dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="12dp"
+                android:text="TextView"
+                android:textColor="#ffffff" />
+
+            <TextView
+                android:id="@+id/test_option_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="16dp"
+                android:background="@color/tab_default"
+                android:paddingStart="8dp"
+                android:paddingTop="12dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="12dp"
+                android:text="TextView"
+                android:textColor="#ffffff" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/test_q_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/rule_background_colour"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="1 / 2"
+            android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/test_wrong"
+        android:layout_width="120dp"
+        android:layout_height="44dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/gray"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="8dp"
+        android:text="Wrong !"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/test_right"
+        android:layout_width="120dp"
+        android:layout_height="44dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/gray"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="8dp"
+        android:text="Right !"
+        android:textColor="@color/right"
+        android:textSize="18sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/test_next"
+        android:layout_width="120dp"
+        android:layout_height="44dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorAccent"
+        android:gravity="center"
+        android:text="CHECK"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/test_unlock_answer_view"
+        android:layout_width="120dp"
+        android:layout_height="44dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="68dp"
+        android:background="@color/rule_background_colour"
+        android:drawablePadding="10dp"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:text="Unlock Answer"
+        android:textColor="#000000"
+        android:textSize="14sp"
+        android:visibility="gone" />
+    </FrameLayout>
+
+

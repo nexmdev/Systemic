@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="iupac"><font size="18">Iupac</font></string>
+    <string name="reactions_notes"><font size="18">Reactions Notes</font></string>
+    <string name="practice"><font size="18">Practice</font></string>
+</resources>

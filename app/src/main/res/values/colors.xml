@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#1774B9</color>
+    <color name="colorPrimaryDark">#1774B9</color>
+    <color name="colorAccent">#FFC107</color>
+    <color name="background">#DFDEDE</color>
+    <color name="darkbackground">#C6C6C6</color>
+    <color name="gray">#F2FCBE</color>
+    <color name="rule_background_colour">#cab7dcf7</color>
+    <color name="rule_background_colour_dark">#CA1395F4</color>
+    <color name="tab_background">#104C78</color>
+   <color name="tab_default">#1774B9</color>
+    <color name="right">#7BB44D</color>
+    <color name="unlock_menu_background">#29f103</color>
+    <color name="yellow">#fff9c4</color>
+    <color name="navy">#000066</color>
+    <color name="imagebackground">#A9F3FF</color>
+</resources>

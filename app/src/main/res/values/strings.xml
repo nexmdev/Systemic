@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Iupac Nomenclature Class XII</string>
+    <string name="intro">Understand Rules . Practice . Take a Quiz \nBecome master of IUPAC Nomenclature \n\nSelect ...</string>
+    <string name="title_activity_detail">DetailActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_reactions_topics">ReactionsTopicsActivity</string>
+    <string name="ad_unit_id">ca-app-pub-3940256099942544/8135179316</string>
+    <string name="reaction_dialog">Coming soon ..................</string>
+    <string name="reaction_d_body">Contents for all other units are in preparation and will be available approximatly towards middle of May 2019 . Please check for updates in May 2019 . Meanwhile give your suggesstions and feedback at dev.nexm@gmail.com\nThank you !\nNexm app development</string>
+    <string name="title_activity_video">VideoActivity</string>
+    <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="iupac">Iupac</string>
+    <string name="reactions_notes">Reactions Notes</string>
+    <string name="practice">Practice</string>
+</resources>

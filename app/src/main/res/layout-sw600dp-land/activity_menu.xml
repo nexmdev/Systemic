@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tab_background"
+    tools:context=".MenuActivity">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <FrameLayout
+                    android:id="@+id/menu_frame_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:onClick="menu_click_handler">
+
+                    <ImageView
+                        android:id="@+id/menu_imageView_1"
+                        android:layout_width="220dp"
+                        android:layout_height="240dp"
+                        android:adjustViewBounds="false"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/complete_b" />
+
+                    <TextView
+                        android:id="@+id/menu_textView_1"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="64dp"
+                        android:alpha="0.4"
+                        android:gravity="center"
+                        android:text="Alkane - Longest chain"
+                        android:textColor="@android:color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                </FrameLayout>
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="false"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/arrow_default_right" />
+
+                <FrameLayout
+                    android:id="@+id/menu_frame_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:onClick="menu_click_handler">
+
+                    <ImageView
+                        android:id="@+id/menu_imageView_2"
+                        android:layout_width="220dp"
+                        android:layout_height="240dp"
+                        android:adjustViewBounds="false"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/default_menu" />
+
+                    <TextView
+                        android:id="@+id/menu_textView_2"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="64dp"
+                        android:alpha="0.4"
+                        android:gravity="center"
+                        android:text="2"
+                        android:textColor="@android:color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/menu_unlockView_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@color/unlock_menu_background"
+                        android:drawableLeft="@drawable/ic_action_movie"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="Unlock"
+                        android:textColor="@color/tab_background"
+                        android:textStyle="bold"
+                        android:visibility="visible" />
+
+                </FrameLayout>
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="50dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="false"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/arrow_default_right" />
+
+                <FrameLayout
+                    android:id="@+id/menu_frame_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:onClick="menu_click_handler">
+
+                    <ImageView
+                        android:id="@+id/menu_imageView_3"
+                        android:layout_width="220dp"
+                        android:layout_height="240dp"
+                        android:adjustViewBounds="false"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/default_menu" />
+
+                    <TextView
+                        android:id="@+id/menu_textView_3"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="64dp"
+                        android:alpha="0.4"
+                        android:gravity="center"
+                        android:text="4"
+                        android:textColor="@android:color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/menu_unlockView_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@color/unlock_menu_background"
+                        android:drawableLeft="@drawable/ic_action_movie"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="Unlock"
+                        android:visibility="invisible" />
+
+                </FrameLayout>
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <ImageView
+
+                    android:layout_width="220dp"
+                    android:layout_height="30dp"
+                    android:adjustViewBounds="false"
+                    android:scaleType="fitXY"
+                    android:visibility="invisible"
+                    app:srcCompat="@drawable/complete" />
+
+                <ImageView
+
+                    android:id="@+id/imageView5"
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:adjustViewBounds="false"
+                    android:scaleType="fitXY"
+                    android:visibility="invisible"
+                    app:srcCompat="@drawable/complete" />
+
+                <ImageView
+
+                    android:id="@+id/imageView4"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:adjustViewBounds="false"
+                    android:scaleType="fitXY"
+                    android:visibility="invisible"
+                    app:srcCompat="@drawable/complete" />
+
+                <ImageView
+
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:visibility="invisible"
+                    app:srcCompat="@drawable/arrow_complete_right" />
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_vertical|center"
+                    android:adjustViewBounds="false"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/arrow_default_down" />
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <FrameLayout
+                    android:id="@+id/menu_frame_6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:onClick="menu_click_handler">
+
+                    <ImageView
+                        android:id="@+id/menu_imageView_6"
+                        android:layout_width="220dp"
+                        android:layout_height="240dp"
+                        android:adjustViewBounds="false"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/default_menu" />
+
+                    <TextView
+                        android:id="@+id/menu_textView_6"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="64dp"
+                        android:alpha="0.4"
+                        android:gravity="center"
+                        android:text="5"
+                        android:textColor="@android:color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/menu_unlockView_6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@color/unlock_menu_background"
+                        android:drawableLeft="@drawable/ic_action_movie"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="Unlock"
+                        android:visibility="invisible" />
+
+                </FrameLayout>
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="50dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/arrow_default_left"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="346dp" />
+
+                <FrameLayout
+                    android:id="@+id/menu_frame_5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:onClick="menu_click_handler">
+
+                    <ImageView
+                        android:id="@+id/menu_imageView_5"
+                        android:layout_width="220dp"
+                        android:layout_height="240dp"
+                        android:adjustViewBounds="false"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/default_menu" />
+
+                    <TextView
+                        android:id="@+id/menu_textView_5"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="64dp"
+                        android:alpha="0.4"
+                        android:gravity="center"
+                        android:text="4"
+                        android:textColor="@android:color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/menu_unlockView_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@color/unlock_menu_background"
+                        android:drawableLeft="@drawable/ic_action_movie"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="Unlock"
+                        android:visibility="invisible" />
+
+                </FrameLayout>
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    app:srcCompat="@drawable/arrow_default_left" />
+
+                <FrameLayout
+                    android:id="@+id/menu_frame_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:onClick="menu_click_handler">
+
+                    <ImageView
+                        android:id="@+id/menu_imageView_4"
+                        android:layout_width="220dp"
+                        android:layout_height="240dp"
+                        android:adjustViewBounds="false"
+                        android:scaleType="fitXY"
+                        app:srcCompat="@drawable/default_menu" />
+
+                    <TextView
+                        android:id="@+id/menu_textView_4"
+                        android:layout_width="160dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|center_horizontal"
+                        android:layout_marginBottom="64dp"
+                        android:alpha="0.4"
+                        android:gravity="center"
+                        android:text="3"
+                        android:textColor="@android:color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/menu_unlockView_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@color/unlock_menu_background"
+                        android:drawableLeft="@drawable/ic_action_movie"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        android:text="Unlock"
+                        android:visibility="invisible" />
+
+                </FrameLayout>
+
+            </TableRow>
+
+
+        </TableLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.nexm.iupacnomenclatureclassxii.BottomNavigationActivity">
+    <item
+        android:id="@+id/dash_menu_action_share"
+        android:orderInCategory="100"
+        android:title=""
+        android:icon="@android:drawable/ic_menu_share"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/main_menu_about"
+        android:orderInCategory="200"
+        android:title="About"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/dash_menu_rate"
+        android:orderInCategory="300"
+        android:title="Rate"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/dash_menu_legal"
+        android:orderInCategory="400"
+        android:title="Legal"
+        app:showAsAction="never" />
+
+
+</menu>
