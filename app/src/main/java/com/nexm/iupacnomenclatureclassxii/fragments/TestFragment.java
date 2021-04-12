@@ -9,11 +9,6 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.content.res.AppCompatResources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,21 +16,32 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdListener;
+import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.nexm.iupacnomenclatureclassxii.IUPAC_APPLICATION;
 import com.nexm.iupacnomenclatureclassxii.R;
+import com.nexm.iupacnomenclatureclassxii.util.CONSTANTS;
 
 import java.util.Arrays;
 import java.util.Collections;
 
 
-public class TestFragment extends Fragment implements RewardedVideoAdListener {
+public class TestFragment extends Fragment  {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "TABLE";
@@ -51,7 +57,7 @@ public class TestFragment extends Fragment implements RewardedVideoAdListener {
     private AnimationDrawable myFrameAnimation1;
     AnimationDrawable myFrameAnimation2;
     private OnFragmentInteractionListener mListener;
-    private RewardedVideoAd mRewardedVideoAd;
+    private RewardedAd mRewardedVideoAd;
 
 
     public TestFragment() {
@@ -85,31 +91,80 @@ public class TestFragment extends Fragment implements RewardedVideoAdListener {
             test_table = getArguments().getString("TEST_TABLE_NAME");
             first_q = getArguments().getInt(("START_QUESTION"));
         }
-        mInterstitialAd = new InterstitialAd(getActivity());
-        mInterstitialAd.setAdUnitId("ca-app-pub-6219444241621852/4563393019");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                // Load the next interstitial.
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
-            }
+        setRewardedFullCallback();
 
-        });
+        loadInterstitialAd();
+        loadRewaredAd();
 
-
-        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(getActivity());
-        mRewardedVideoAd.setRewardedVideoAdListener(this);
-        if(!mRewardedVideoAd.isLoaded()){
-            mRewardedVideoAd.loadAd("ca-app-pub-6219444241621852/2141721766",
-                    new AdRequest.Builder().build());
-        }
-       // test_table = "Alkane_Test_1";
-       // first_q = (5*rule_no)-5;
-       // no_q = (first_q == 35) ? 10 : 5;
         cursor = IUPAC_APPLICATION.database.rawQuery("SELECT * FROM  " + test_table + " ",null);
         cursor.moveToFirst();
 
+    }
+
+    private void setRewardedFullCallback() {
+        mRewardedVideoAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+            @Override
+            public void onAdShowedFullScreenContent() {
+                // Called when ad is shown.
+
+                mRewardedVideoAd = null;
+            }
+
+            @Override
+            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                // Called when ad fails to show.
+
+            }
+
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                // Called when ad is dismissed.
+                // Don't forget to set the ad reference to null so you
+                // don't show the ad a second time.
+               mRewardedVideoAd = null;
+            }
+        });
+    }
+
+    private void loadRewaredAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        RewardedAd.load(getActivity(), CONSTANTS.REWARDED_ID_TEST_FRAGMENT,
+                adRequest, new RewardedAdLoadCallback(){
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error.
+
+                        mRewardedVideoAd = null;
+                    }
+
+                    @Override
+                    public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                        mRewardedVideoAd = rewardedAd;
+
+                    }
+                });
+    }
+
+    private void loadInterstitialAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(getActivity(), CONSTANTS.INTERSTITIAL_ID_TEST_FRAGMENT, adRequest, new InterstitialAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                // The mInterstitialAd reference will be null until
+                // an ad is loaded.
+                mInterstitialAd = interstitialAd;
+
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                // Handle the error
+
+                mInterstitialAd = null;
+            }
+        });
     }
 
     @Override
@@ -202,7 +257,7 @@ public class TestFragment extends Fragment implements RewardedVideoAdListener {
                             wrong.setVisibility(View.VISIBLE);
                             animateWrong();
                             TextView textView = view.findViewById(selectedOption);
-                            textView.setCompoundDrawablesWithIntrinsicBounds(null,null,ContextCompat.getDrawable(getActivity(),R.drawable.led_red),null);
+                            textView.setCompoundDrawablesWithIntrinsicBounds(null,null, ContextCompat.getDrawable(getActivity(),R.drawable.led_red),null);
 
                             /*if(selectedOption == option1.getId()){
                                 option1.setCompoundDrawablesWithIntrinsicBounds(null,null,getResources().getDrawable(R.drawable.led_red),null);
@@ -236,8 +291,8 @@ public class TestFragment extends Fragment implements RewardedVideoAdListener {
                             }
                             cursor.close();
                             getActivity().setResult(Activity.RESULT_OK);
-                            if (mInterstitialAd.isLoaded()) {
-                                mInterstitialAd.show();
+                            if (mInterstitialAd != null) {
+                                mInterstitialAd.show(getActivity());
                             }
                             getActivity().finish();
                         }else{
@@ -252,15 +307,55 @@ public class TestFragment extends Fragment implements RewardedVideoAdListener {
         unlock_answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mRewardedVideoAd.isLoaded()) {
-                    mRewardedVideoAd.show();
+                if (mRewardedVideoAd!=null){
+                    showRewardedAd();
                 }
             }
-        });
+            }
+        );
 
         return view;
     }
 
+    private void showRewardedAd() {
+        if (mRewardedVideoAd != null) {
+            Activity activityContext = getActivity();
+            mRewardedVideoAd.show(activityContext, new OnUserEarnedRewardListener() {
+                @Override
+                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                    // Handle the reward.
+                    byte[] b = cursor.getBlob(cursor.getColumnIndex("AI"));
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(b,0,b.length);
+                    question_image.setImageBitmap(bitmap);
+                    setDefaultViews();
+                    String answer = cursor.getString(cursor.getColumnIndex("A"));
+                    if(answer.matches(option1.getText().toString())){
+                        processOptionClick(R.color.tab_background, R.color.tab_default, option1,option4,option3,option2);
+                        option1.setCompoundDrawablesWithIntrinsicBounds(null,null,ContextCompat.getDrawable(getActivity(),R.drawable.led),null);
+                        animateLeds(option1);
+                        next.setText("CONTINUE");
+                    }else if(answer.matches(option2.getText().toString())){
+                        processOptionClick(R.color.tab_background, R.color.tab_default, option2,option4,option3,option1);
+                        option2.setCompoundDrawablesWithIntrinsicBounds(null,null,ContextCompat.getDrawable(getActivity(),R.drawable.led),null);
+                        animateLeds(option2);
+                        next.setText("CONTINUE");
+                    }else if(answer.matches(option3.getText().toString())){
+                        processOptionClick(R.color.tab_background, R.color.tab_default, option3,option4,option2,option1);
+                        option3.setCompoundDrawablesWithIntrinsicBounds(null,null,ContextCompat.getDrawable(getActivity(),R.drawable.led),null);
+                        animateLeds(option3);
+                        next.setText("CONTINUE");
+                    }else if(answer.matches(option4.getText().toString())){
+                        processOptionClick(R.color.tab_background, R.color.tab_default, option4,option3,option2,option1);
+                        option4.setCompoundDrawablesWithIntrinsicBounds(null,null,ContextCompat.getDrawable(getActivity(),R.drawable.led),null);
+                        animateLeds(option4);
+                        next.setText("CONTINUE");
+                    }
+                }
+            });
+        } else {
+
+        }
+    }
 
 
     private void scrollview() {
@@ -396,19 +491,19 @@ public class TestFragment extends Fragment implements RewardedVideoAdListener {
     }
     @Override
     public void onResume() {
-        mRewardedVideoAd.resume(getActivity());
+
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        mRewardedVideoAd.pause(getActivity());
+
         super.onPause();
     }
 
     @Override
     public void onDestroy() {
-        mRewardedVideoAd.destroy(getActivity());
+
         super.onDestroy();
     }
     @Override
@@ -418,80 +513,10 @@ public class TestFragment extends Fragment implements RewardedVideoAdListener {
        // cursor.close();
     }
 
-    @Override
-    public void onRewardedVideoAdLoaded() {
 
-    }
 
-    @Override
-    public void onRewardedVideoAdOpened() {
 
-    }
 
-    @Override
-    public void onRewardedVideoStarted() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdClosed() {
-        if(!mRewardedVideoAd.isLoaded()){
-            mRewardedVideoAd.loadAd("ca-app-pub-6219444241621852/2141721766",
-                    new AdRequest.Builder().build());
-        }
-
-    }
-
-    @Override
-    public void onRewarded(RewardItem reward) {
-        //Toast.makeText(getActivity(), "onRewarded! currency: " + reward.getType() + "  amount: " +
-              //  reward.getAmount(), Toast.LENGTH_SHORT).show();
-        // Reward the user.
-        byte[] b = cursor.getBlob(cursor.getColumnIndex("AI"));
-        Bitmap bitmap = BitmapFactory.decodeByteArray(b,0,b.length);
-        question_image.setImageBitmap(bitmap);
-        setDefaultViews();
-        String answer = cursor.getString(cursor.getColumnIndex("A"));
-        if(answer.matches(option1.getText().toString())){
-            processOptionClick(R.color.tab_background, R.color.tab_default, option1,option4,option3,option2);
-            option1.setCompoundDrawablesWithIntrinsicBounds(null,null,ContextCompat.getDrawable(getActivity(),R.drawable.led),null);
-            animateLeds(option1);
-            next.setText("CONTINUE");
-        }else if(answer.matches(option2.getText().toString())){
-            processOptionClick(R.color.tab_background, R.color.tab_default, option2,option4,option3,option1);
-            option2.setCompoundDrawablesWithIntrinsicBounds(null,null,ContextCompat.getDrawable(getActivity(),R.drawable.led),null);
-            animateLeds(option2);
-            next.setText("CONTINUE");
-        }else if(answer.matches(option3.getText().toString())){
-            processOptionClick(R.color.tab_background, R.color.tab_default, option3,option4,option2,option1);
-            option3.setCompoundDrawablesWithIntrinsicBounds(null,null,ContextCompat.getDrawable(getActivity(),R.drawable.led),null);
-            animateLeds(option3);
-            next.setText("CONTINUE");
-        }else if(answer.matches(option4.getText().toString())){
-            processOptionClick(R.color.tab_background, R.color.tab_default, option4,option3,option2,option1);
-            option4.setCompoundDrawablesWithIntrinsicBounds(null,null,ContextCompat.getDrawable(getActivity(),R.drawable.led),null);
-            animateLeds(option4);
-            next.setText("CONTINUE");
-        }
-    }
-
-    @Override
-    public void onRewardedVideoAdLeftApplication() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdFailedToLoad(int i) {
-        if(unlock_answer.getVisibility() == View.VISIBLE){
-            unlock_answer.setVisibility(View.GONE);
-        }
-
-    }
-
-    @Override
-    public void onRewardedVideoCompleted() {
-
-    }
 
 
     public interface OnFragmentInteractionListener {

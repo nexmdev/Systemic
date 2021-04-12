@@ -18,13 +18,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.nexm.iupacnomenclatureclassxii.IUPAC_APPLICATION;
 import com.nexm.iupacnomenclatureclassxii.R;
+import com.nexm.iupacnomenclatureclassxii.util.CONSTANTS;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,7 +48,7 @@ import java.util.Collections;
  * Use the {@link ReactionQuestionFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ReactionQuestionFragment extends Fragment implements RewardedVideoAdListener {
+public class ReactionQuestionFragment extends Fragment  {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -60,7 +71,7 @@ public class ReactionQuestionFragment extends Fragment implements RewardedVideoA
     private ImageView question_image;
     private AnimationDrawable myFrameAnimation1;
     private Bitmap bm;
-    private RewardedVideoAd mRewardedVideoAd;
+    private RewardedAd mRewardedVideoAd;
     private Boolean isRunning = false;
 
     private OnFragmentInteractionListener mListener;
@@ -124,30 +135,67 @@ public class ReactionQuestionFragment extends Fragment implements RewardedVideoA
             int c = cursor.getCount();
         }
 
-        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(getActivity());
-        mRewardedVideoAd.setRewardedVideoAdListener(this);
-        if(!mRewardedVideoAd.isLoaded()){
-            mRewardedVideoAd.loadAd("ca-app-pub-6219444241621852/6281414072",
-           // mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
-                    new AdRequest.Builder().build());
-        }
+       setRewardedFullCallback();
+        loadRewaredAd();
+    }
+    private void setRewardedFullCallback() {
+        mRewardedVideoAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+            @Override
+            public void onAdShowedFullScreenContent() {
+                // Called when ad is shown.
+
+                mRewardedVideoAd = null;
+            }
+
+            @Override
+            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                // Called when ad fails to show.
+
+            }
+
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                // Called when ad is dismissed.
+                // Don't forget to set the ad reference to null so you
+                // don't show the ad a second time.
+                mRewardedVideoAd = null;
+            }
+        });
+    }
+
+    private void loadRewaredAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        RewardedAd.load(getActivity(), CONSTANTS.REWARDED_ID_REACTION_Q_FRAGMENT,
+                adRequest, new RewardedAdLoadCallback(){
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error.
+
+                        mRewardedVideoAd = null;
+                    }
+
+                    @Override
+                    public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                        mRewardedVideoAd = rewardedAd;
+
+                    }
+                });
     }
 
 
 
     @Override
     public void onResume() {
-        mRewardedVideoAd.resume(getActivity());
+
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        mRewardedVideoAd.pause(getActivity());
+
         if (Unit.matches("Practice") && !isRunning){
-            if (mRewardedVideoAd.isLoaded()) {
-               // mRewardedVideoAd.show();
-            }
+
             if(IUPAC_APPLICATION.practiceDatabase.isOpen()){
                 unitTable = "Topics";
                 i = i+ qStart;
@@ -160,7 +208,7 @@ public class ReactionQuestionFragment extends Fragment implements RewardedVideoA
 
     @Override
     public void onDestroy() {
-        mRewardedVideoAd.destroy(getActivity());
+
         cursor.close();
         super.onDestroy();
     }
@@ -173,7 +221,7 @@ public class ReactionQuestionFragment extends Fragment implements RewardedVideoA
         questionNoTextView = view.findViewById(R.id.question_noView);
         questionTextTextView = view.findViewById(R.id.question_text);
         right = view.findViewById(R.id.question_right);
-        right.setCompoundDrawablesWithIntrinsicBounds(null,null,AppCompatResources.getDrawable(getActivity(),R.drawable.ic_done_black_24dp),null);
+        right.setCompoundDrawablesWithIntrinsicBounds(null,null, AppCompatResources.getDrawable(getActivity(),R.drawable.ic_done_black_24dp),null);
         wrong = view.findViewById(R.id.question_wrong);
         wrong.setCompoundDrawablesWithIntrinsicBounds(null,null,AppCompatResources.getDrawable(getActivity(),R.drawable.ic_close_black_24dp),null);
         next = view.findViewById(R.id.question_check);
@@ -298,12 +346,8 @@ public class ReactionQuestionFragment extends Fragment implements RewardedVideoA
         unlock_answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mRewardedVideoAd.isLoaded()) {
-                    isRunning = true;
-                    mRewardedVideoAd.show();
-                }else{
-                    Toast.makeText(getActivity(), "Network problem ! Try again", Toast.LENGTH_SHORT).show();
-                }
+                showRewardedAd();
+
             }
         });
         return view;
@@ -396,6 +440,42 @@ public class ReactionQuestionFragment extends Fragment implements RewardedVideoA
         next.setText("CHECK");
         next.setVisibility(View.GONE);
     }
+    private void showRewardedAd() {
+        if (mRewardedVideoAd != null) {
+            isRunning = true;
+            Activity activityContext = getActivity();
+            mRewardedVideoAd.show(activityContext, new OnUserEarnedRewardListener() {
+                @Override
+                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                    // Handle the reward.
+                    byte[] b = cursor.getBlob(cursor.getColumnIndex("AnswerImage"));
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(b,0,b.length);
+                    question_image.setImageBitmap(bitmap);
+                    setDefaultViews();
+                    String answer = cursor.getString(cursor.getColumnIndex("AnswerText"));
+                    if(answer.matches(option1.getText().toString())){
+                        processOptionClick(R.drawable.reaction_option_selected, R.drawable.reaction_option_back, option1,option3,option2);
+                        option1.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(getActivity(),R.drawable.led),null,null,null);
+                        animateLeds(option1);
+                        next.setText("CONTINUE");
+                    }else if(answer.matches(option2.getText().toString())){
+                        processOptionClick(R.drawable.reaction_option_selected, R.drawable.reaction_option_back, option2,option3,option1);
+                        option2.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(getActivity(),R.drawable.led),null,null,null);
+                        animateLeds(option2);
+                        next.setText("CONTINUE");
+                    }else if(answer.matches(option3.getText().toString())){
+                        processOptionClick(R.drawable.reaction_option_selected, R.drawable.reaction_option_back, option3,option2,option1);
+                        option3.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(getActivity(),R.drawable.led),null,null,null);
+                        animateLeds(option3);
+                        next.setText("CONTINUE");
+
+                    }
+                }
+            });
+        } else {
+            Toast.makeText(getActivity(), "Network problem ! Try again", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     private void setQuestion() {
 
@@ -445,71 +525,12 @@ public class ReactionQuestionFragment extends Fragment implements RewardedVideoA
         bm = null;
     }
 
-    @Override
-    public void onRewardedVideoAdLoaded() {
 
-    }
 
-    @Override
-    public void onRewardedVideoAdOpened() {
 
-    }
 
-    @Override
-    public void onRewardedVideoStarted() {
 
-    }
 
-    @Override
-    public void onRewardedVideoAdClosed() {
-        isRunning = false;
-        if(!mRewardedVideoAd.isLoaded()){
-            mRewardedVideoAd.loadAd("ca-app-pub-6219444241621852/6281414072",
-           // mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
-                    new AdRequest.Builder().build());
-        }
-
-    }
-
-    @Override
-    public void onRewarded(RewardItem rewardItem) {
-        byte[] b = cursor.getBlob(cursor.getColumnIndex("AnswerImage"));
-        Bitmap bitmap = BitmapFactory.decodeByteArray(b,0,b.length);
-        question_image.setImageBitmap(bitmap);
-        setDefaultViews();
-        String answer = cursor.getString(cursor.getColumnIndex("AnswerText"));
-        if(answer.matches(option1.getText().toString())){
-            processOptionClick(R.drawable.reaction_option_selected, R.drawable.reaction_option_back, option1,option3,option2);
-            option1.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(getActivity(),R.drawable.led),null,null,null);
-            animateLeds(option1);
-            next.setText("CONTINUE");
-        }else if(answer.matches(option2.getText().toString())){
-            processOptionClick(R.drawable.reaction_option_selected, R.drawable.reaction_option_back, option2,option3,option1);
-            option2.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(getActivity(),R.drawable.led),null,null,null);
-            animateLeds(option2);
-            next.setText("CONTINUE");
-        }else if(answer.matches(option3.getText().toString())){
-            processOptionClick(R.drawable.reaction_option_selected, R.drawable.reaction_option_back, option3,option2,option1);
-            option3.setCompoundDrawablesWithIntrinsicBounds(ContextCompat.getDrawable(getActivity(),R.drawable.led),null,null,null);
-            animateLeds(option3);
-            next.setText("CONTINUE");
-
-    }}
-
-    @Override
-    public void onRewardedVideoAdLeftApplication() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdFailedToLoad(int i) {
-
-    }
-
-    @Override
-    public void onRewardedVideoCompleted() {
-
-    }
 
     /**
      * This interface must be implemented by activities that contain this

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.nexm.iupacnomenclatureclassxii.R;
+import com.nexm.iupacnomenclatureclassxii.util.CONSTANTS;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,7 +42,7 @@ public class AboutFragment extends Fragment {
     private void mail(View view) {
 
         Intent email = new Intent(Intent.ACTION_SEND);
-        email.putExtra(Intent.EXTRA_EMAIL, new String[]{ "dev.nexm@gmail.com"});
+        email.putExtra(Intent.EXTRA_EMAIL, new String[]{CONSTANTS.DEV_EMAIL});
         email.putExtra(Intent.EXTRA_SUBJECT, "Contact Developer");
         email.putExtra(Intent.EXTRA_TEXT, "");
 

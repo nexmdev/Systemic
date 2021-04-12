@@ -16,16 +16,18 @@
             android:name=".BottomNavigationActivity"
             android:label="@string/title_activity_bottom_navigation" />
 
-        
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="[ca-app-pub-3940256099942544~3347511713]" />
 
         <activity
             android:name=".DetailActivity"
             android:label="@string/title_activity_detail"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName=".BottomNavigationActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.nexm.iupacnomenclatureclassxii.MainActivity" />
+                android:value="com.nexm.iupacnomenclatureclassxii.BottomNavigationActivity" />
         </activity>
         <activity android:name=".MenuActivity" />
         <activity android:name=".LauncherActivity">

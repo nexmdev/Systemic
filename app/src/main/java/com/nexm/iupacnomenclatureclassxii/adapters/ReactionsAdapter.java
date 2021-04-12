@@ -3,13 +3,15 @@ package com.nexm.iupacnomenclatureclassxii.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.content.res.AppCompatResources;
-import android.support.v7.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.nexm.iupacnomenclatureclassxii.R;
 
@@ -103,7 +105,7 @@ public class ReactionsAdapter extends RecyclerView.Adapter<ReactionsAdapter.View
             preparation = itemView.findViewById(R.id.reactions_main_recycler_preparaton);
             reactions = itemView.findViewById(R.id.reactions_main_recycler_reactions);
             mechanisms = itemView.findViewById(R.id.reactions_main_recycler_mechanisms);
-            preparation.setCompoundDrawablesWithIntrinsicBounds(null,AppCompatResources.getDrawable(context,R.drawable.ic_action_process_start),null,null);
+            preparation.setCompoundDrawablesWithIntrinsicBounds(null, AppCompatResources.getDrawable(context,R.drawable.ic_action_process_start),null,null);
             reactions.setCompoundDrawablesWithIntrinsicBounds(null,AppCompatResources.getDrawable(context,R.drawable.ic_action_process_end),null,null);
             mechanisms.setCompoundDrawablesWithIntrinsicBounds(null,AppCompatResources.getDrawable(context,R.drawable.ic_action_process_save),null,null);
         }

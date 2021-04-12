@@ -5,27 +5,31 @@ import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.gms.ads.AdListener;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
+
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.material.tabs.TabLayout;
 import com.nexm.iupacnomenclatureclassxii.fragments.ExplanationFragment;
 import com.nexm.iupacnomenclatureclassxii.fragments.PracticeFragment;
 import com.nexm.iupacnomenclatureclassxii.fragments.ReactionQuestionFragment;
 import com.nexm.iupacnomenclatureclassxii.fragments.TestFragment;
+import com.nexm.iupacnomenclatureclassxii.util.CONSTANTS;
 
 import java.util.Objects;
 
@@ -59,17 +63,8 @@ public class DetailActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId("ca-app-pub-6219444241621852/2403159767");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-        mInterstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                // Load the next interstitial.
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
-            }
 
-        });
+        loadAd();
 
         callerActivity = getIntent().getStringExtra("Caller");
         SectionsPagerAdapter mSectionsPagerAdapter = null;
@@ -142,6 +137,27 @@ public class DetailActivity extends AppCompatActivity implements
 
     }
 
+    private void loadAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(this, CONSTANTS.INTERSTITIAL_ID_DETAIL_ACTIVITY, adRequest, new InterstitialAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                // The mInterstitialAd reference will be null until
+                // an ad is loaded.
+                mInterstitialAd = interstitialAd;
+
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                // Handle the error
+
+                mInterstitialAd = null;
+            }
+        });
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -176,20 +192,20 @@ public class DetailActivity extends AppCompatActivity implements
     @Override
     public void onPracticeSelection() {
 
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
+        if (mInterstitialAd != null) {
+            mInterstitialAd.show(DetailActivity.this);
         } else {
-            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+           loadAd();
         }
         mViewPager.setCurrentItem(1);
     }
 
     @Override
     public void onExplanationContinue() {
-        if (mInterstitialAd.isLoaded()) {
-            mInterstitialAd.show();
+        if (mInterstitialAd != null) {
+            mInterstitialAd.show(DetailActivity.this);
         } else {
-            mInterstitialAd.loadAd(new AdRequest.Builder().build());
+            loadAd();
         }
         mViewPager.setCurrentItem(1);
     }
@@ -201,7 +217,7 @@ public class DetailActivity extends AppCompatActivity implements
 
 
     /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * A {@link FragmentStatePagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
     class SectionsPagerAdapter extends FragmentStatePagerAdapter {
@@ -210,7 +226,7 @@ public class DetailActivity extends AppCompatActivity implements
         private String tests_table_name = "";
         private final int rule_no;
 
-        SectionsPagerAdapter(FragmentManager fm, String rules_table_name, int r_no, String test_table_name,String qTable) {
+        SectionsPagerAdapter(FragmentManager fm, String rules_table_name, int r_no, String test_table_name, String qTable) {
             super(fm);
 
             if(callerActivity.matches("Iupac")){

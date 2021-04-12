@@ -4,21 +4,27 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
-import com.nexm.iupacnomenclatureclassxii.util.AppRater;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class MenuActivity extends AppCompatActivity implements RewardedVideoAdListener {
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.OnUserEarnedRewardListener;
+import com.google.android.gms.ads.rewarded.RewardItem;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.nexm.iupacnomenclatureclassxii.util.AppRater;
+import com.nexm.iupacnomenclatureclassxii.util.CONSTANTS;
+
+public class MenuActivity extends AppCompatActivity  {
 
     private Cursor cursor;
     private String TOPIC_NAME,TABLE_NAME;
@@ -28,7 +34,7 @@ public class MenuActivity extends AppCompatActivity implements RewardedVideoAdLi
     private int[] startQ = {0,0,0,0,0,0,0,0,8};
     private int[] noQ = {0,0,0,0,0,0,0,0,8};
     private int unlock_rule_position;
-    private RewardedVideoAd mRewardedVideoAd;
+    private RewardedAd mRewardedVideoAd;
     private int id = 0;
 
     @Override
@@ -41,15 +47,56 @@ public class MenuActivity extends AppCompatActivity implements RewardedVideoAdLi
             if(!isTab)this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
         AppRater.app_launched(this);
-        mRewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
-        mRewardedVideoAd.setRewardedVideoAdListener(this);
-        mRewardedVideoAd.loadAd("ca-app-pub-6219444241621852/8749076261",
-                new AdRequest.Builder().build());
+        loadRewaredAd();
+        setRewardedFullCallback();
         TOPIC_NAME = getIntent().getStringExtra("TOPIC");
         TABLE_NAME = TOPIC_NAME+"_Rules";
         cursor = IUPAC_APPLICATION.database.rawQuery("SELECT * FROM  " + TABLE_NAME + " ", null);
 
         setViews();
+    }
+    private void setRewardedFullCallback() {
+        mRewardedVideoAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+            @Override
+            public void onAdShowedFullScreenContent() {
+                // Called when ad is shown.
+
+                mRewardedVideoAd = null;
+            }
+
+            @Override
+            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                // Called when ad fails to show.
+
+            }
+
+            @Override
+            public void onAdDismissedFullScreenContent() {
+                // Called when ad is dismissed.
+                // Don't forget to set the ad reference to null so you
+                // don't show the ad a second time.
+                mRewardedVideoAd = null;
+            }
+        });
+    }
+    private void loadRewaredAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        RewardedAd.load(MenuActivity.this, CONSTANTS.REWARDED_ID_MENU_ACTIVITY,
+                adRequest, new RewardedAdLoadCallback(){
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error.
+
+                        mRewardedVideoAd = null;
+                    }
+
+                    @Override
+                    public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
+                        mRewardedVideoAd = rewardedAd;
+
+                    }
+                });
     }
 
     private void setViews() {
@@ -174,11 +221,25 @@ public class MenuActivity extends AppCompatActivity implements RewardedVideoAdLi
 
     private void showUnlockDialog() {
         //Toast.makeText(getApplicationContext(),"Unlock",Toast.LENGTH_SHORT).show();
-        if (mRewardedVideoAd.isLoaded()) {
-            mRewardedVideoAd.show();
+        if (mRewardedVideoAd != null) {
+            mRewardedVideoAd.show(MenuActivity.this, new OnUserEarnedRewardListener() {
+                @Override
+                public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+                    status[unlock_rule_position]=1;
+                    switch (unlock_rule_position){
+                        case 1: setUnlockedMenu(R.id.menu_imageView_2,R.id.menu_unlockView_2);break;
+                        case 2: setUnlockedMenu(R.id.menu_imageView_3,R.id.menu_unlockView_3);break;
+                        case 3: setUnlockedMenu(R.id.menu_imageView_4,R.id.menu_unlockView_4);break;
+                        case 4: setUnlockedMenu(R.id.menu_imageView_5,R.id.menu_unlockView_5);break;
+                        case 5: setUnlockedMenu(R.id.menu_imageView_6,R.id.menu_unlockView_6);break;
+
+                    }
+                    unlock_rule_position++;
+                    IUPAC_APPLICATION.database.execSQL("UPDATE `"+TABLE_NAME+"` SET `Status`=1  WHERE RuleNo='"+unlock_rule_position+"'");
+                }
+            });
         }else{
-            mRewardedVideoAd.loadAd("ca-app-pub-6219444241621852/8749076261",
-                    new AdRequest.Builder().build());
+           loadRewaredAd();
         }
     }
 
@@ -215,12 +276,7 @@ public class MenuActivity extends AppCompatActivity implements RewardedVideoAdLi
 
 
         super.onResume();
-        mRewardedVideoAd.resume(this);
-      /*  mRewardedVideoAd.setRewardedVideoAdListener(this);
-        if(!mRewardedVideoAd.isLoaded()){
-            mRewardedVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917",
-                    new AdRequest.Builder().build());
-        }*/
+
         if(complete == 1){
 
             cursor.close();
@@ -233,7 +289,7 @@ public class MenuActivity extends AppCompatActivity implements RewardedVideoAdLi
     @Override
     public void onPause() {
                super.onPause();
-        mRewardedVideoAd.pause(this);
+
     }
 
     @Override
@@ -244,45 +300,6 @@ public class MenuActivity extends AppCompatActivity implements RewardedVideoAdLi
 
 
 
-    @Override
-    public void onRewardedVideoAdLoaded() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdOpened() {
-
-    }
-
-    @Override
-    public void onRewardedVideoStarted() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdClosed() {
-        if(!mRewardedVideoAd.isLoaded()){
-            mRewardedVideoAd.loadAd("ca-app-pub-6219444241621852/8749076261",
-                    new AdRequest.Builder().build());
-        }
-
-    }
-
-    @Override
-    public void onRewarded(RewardItem rewardItem) {
-        status[unlock_rule_position]=1;
-        switch (unlock_rule_position){
-            case 1: setUnlockedMenu(R.id.menu_imageView_2,R.id.menu_unlockView_2);break;
-            case 2: setUnlockedMenu(R.id.menu_imageView_3,R.id.menu_unlockView_3);break;
-            case 3: setUnlockedMenu(R.id.menu_imageView_4,R.id.menu_unlockView_4);break;
-            case 4: setUnlockedMenu(R.id.menu_imageView_5,R.id.menu_unlockView_5);break;
-            case 5: setUnlockedMenu(R.id.menu_imageView_6,R.id.menu_unlockView_6);break;
-
-        }
-        unlock_rule_position++;
-        IUPAC_APPLICATION.database.execSQL("UPDATE `"+TABLE_NAME+"` SET `Status`=1  WHERE RuleNo='"+unlock_rule_position+"'");
-
-    }
 
     private void setUnlockedMenu(int id,int unlock_id) {
         ImageView imageView = findViewById(id);
@@ -291,25 +308,7 @@ public class MenuActivity extends AppCompatActivity implements RewardedVideoAdLi
         textView.setVisibility(View.GONE);
     }
 
-    @Override
-    public void onRewardedVideoAdLeftApplication() {
-
-    }
-
-    @Override
-    public void onRewardedVideoAdFailedToLoad(int i) {
-       // Toast.makeText(this,"Try again !",Toast.LENGTH_SHORT).show();
-        if(id != 0){
-            TextView unlock_view = findViewById(id);
-            if(unlock_view != null)
-            unlock_view.setVisibility(View.GONE);
-        }
 
 
-    }
 
-    @Override
-    public void onRewardedVideoCompleted() {
-
-    }
 }

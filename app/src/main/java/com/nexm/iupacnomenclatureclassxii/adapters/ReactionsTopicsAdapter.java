@@ -4,15 +4,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.content.res.AppCompatResources;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.nexm.iupacnomenclatureclassxii.R;
 
@@ -55,7 +57,7 @@ public class ReactionsTopicsAdapter extends RecyclerView.Adapter<ReactionsTopics
         holder.c.setText("Status : "+status);
         if(q==a){
             holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context,R.color.yellow));
-            holder.c.setCompoundDrawablesWithIntrinsicBounds(null,AppCompatResources.getDrawable(context,R.drawable.ic_done_black_24dp),null,null);
+            holder.c.setCompoundDrawablesWithIntrinsicBounds(null, AppCompatResources.getDrawable(context,R.drawable.ic_done_black_24dp),null,null);
             holder.c.setTextColor(ContextCompat.getColor(context,R.color.right));
         }else{
             holder.cardView.setCardBackgroundColor(ContextCompat.getColor(context,android.R.color.white));

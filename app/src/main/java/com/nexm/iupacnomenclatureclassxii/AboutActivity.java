@@ -2,8 +2,10 @@ package com.nexm.iupacnomenclatureclassxii;
 
 import android.content.pm.ActivityInfo;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.nexm.iupacnomenclatureclassxii.fragments.AboutFragment;
 import com.nexm.iupacnomenclatureclassxii.fragments.LegalFragment;

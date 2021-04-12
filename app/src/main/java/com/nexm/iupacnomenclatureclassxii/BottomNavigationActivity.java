@@ -11,11 +11,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.annotation.NonNull;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +19,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.nexm.iupacnomenclatureclassxii.fragments.IupacFragment;
 import com.nexm.iupacnomenclatureclassxii.fragments.PracticeTopicsFragment;
 import com.nexm.iupacnomenclatureclassxii.fragments.ReactionQuestionFragment;
@@ -55,7 +57,7 @@ public class BottomNavigationActivity extends AppCompatActivity implements
                             .commit();
                     return true;
                 case R.id.navigation_dashboard:
-                    getSupportFragmentManager().popBackStack("ReactionUnits",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    getSupportFragmentManager().popBackStack("ReactionUnits", FragmentManager.POP_BACK_STACK_INCLUSIVE);
                     getSupportFragmentManager().beginTransaction()
                             .replace(R.id.iupac_framelayout,new ReactionsUnitsFragments())
                             .addToBackStack("ReactionUnits")
@@ -256,7 +258,7 @@ public class BottomNavigationActivity extends AppCompatActivity implements
             if(navView.getSelectedItemId() != R.id.navigation_home){
                 navView.setSelectedItemId(R.id.navigation_home);
             }else{
-                android.support.v7.app.AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                AlertDialog.Builder builder = new AlertDialog.Builder(this)
                         .setTitle("Exit ")
                         .setMessage("Do you want to exit ?")
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
