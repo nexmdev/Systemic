@@ -7,5 +7,5 @@
 /build
 /captures
 .externalNativeBuild
-/app/src/main/java/util/CONSTANTS
+/app/src/main/java/com/nexm/iupacnomenclatureclassxii/util/CONSTANTS.java
 /app/src/main/AndroidManifest.xml
