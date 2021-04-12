@@ -16,9 +16,7 @@
             android:name=".BottomNavigationActivity"
             android:label="@string/title_activity_bottom_navigation" />
 
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="[ca-app-pub-6219444241621852~3964680149]" />
+        
 
         <activity
             android:name=".DetailActivity"
