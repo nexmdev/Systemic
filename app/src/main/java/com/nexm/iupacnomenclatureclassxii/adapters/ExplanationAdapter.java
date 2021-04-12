@@ -5,8 +5,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.support.v7.content.res.AppCompatResources;
-import android.support.v7.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +14,12 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.ads.formats.NativeAd;
 import com.google.android.gms.ads.formats.UnifiedNativeAd;
-import com.google.android.gms.ads.formats.UnifiedNativeAdView;
+
+import com.google.android.gms.ads.mediation.UnifiedNativeAdMapper;
 import com.nexm.iupacnomenclatureclassxii.R;
 
 import java.util.List;
@@ -27,7 +29,7 @@ public class ExplanationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private Context context;
     private Cursor cursor;
     private Bitmap bm;
-    private List<UnifiedNativeAd> mNativeAds ;
+   // private List<UnifiedNativeAd> mNativeAds ;
     private Typeface typeface;
     // A explanation item view type.
     private static final int E_ITEM_VIEW_TYPE = 0;
@@ -36,7 +38,7 @@ public class ExplanationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     public ExplanationAdapter(Cursor mcursor,List<UnifiedNativeAd> mmNativeAds){
         this.cursor = mcursor;
-        this.mNativeAds = mmNativeAds;
+       // this.mNativeAds = mmNativeAds;
 
     }
     @Override
@@ -82,8 +84,8 @@ public class ExplanationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
     }
-    private void populateNativeAdView(UnifiedNativeAd nativeAd,
-                                      UnifiedNativeAdView adView) {
+   /* private void populateNativeAdView(UnifiedNativeAdMapper nativeAd,
+                                      Uni adView) {
         // Some assets are guaranteed to be in every UnifiedNativeAd.
         ((TextView) adView.getHeadlineView()).setText(nativeAd.getHeadline());
         ((TextView) adView.getBodyView()).setText(nativeAd.getBody());
@@ -131,7 +133,7 @@ public class ExplanationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         // Assign native ad object to the native view.
         adView.setNativeAd(nativeAd);
-    }
+    }*/
     @Override
     public int getItemViewType(int position) {
 

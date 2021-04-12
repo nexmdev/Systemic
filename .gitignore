@@ -7,3 +7,5 @@
 /build
 /captures
 .externalNativeBuild
+/app/src/main/java/util/CONSTANTS
+/app/src/main/AndroidManifest.xml

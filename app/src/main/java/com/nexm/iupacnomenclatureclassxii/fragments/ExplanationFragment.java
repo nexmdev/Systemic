@@ -4,15 +4,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdLoader;
@@ -201,7 +203,7 @@ public class ExplanationFragment extends Fragment {
                     }
                 }).withAdListener(
                 new AdListener() {
-                    @Override
+                    //@Override
                     public void onAdFailedToLoad(int errorCode) {
                         // A native ad failed to load, check if the ad loader has finished loading
                         // and if so, insert the ads into the list.

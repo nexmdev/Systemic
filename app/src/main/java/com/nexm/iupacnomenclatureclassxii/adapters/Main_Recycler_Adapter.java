@@ -2,16 +2,16 @@ package com.nexm.iupacnomenclatureclassxii.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
-import android.os.Build;
-import android.support.v4.view.ViewCompat;
-import android.support.v7.content.res.AppCompatResources;
-import android.support.v7.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.view.ViewCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.nexm.iupacnomenclatureclassxii.MenuActivity;
 import com.nexm.iupacnomenclatureclassxii.R;
@@ -40,7 +40,7 @@ public class Main_Recycler_Adapter extends RecyclerView.Adapter<Main_Recycler_Ad
     public void onBindViewHolder(Main_Recycler_Adapter.Main_ViewHolder holder, final int position) {
 
         holder.name.setText(names[position]);
-        ViewCompat.setBackground(holder.linearLayout,AppCompatResources.getDrawable(context,R.drawable.alc_back));
+        ViewCompat.setBackground(holder.linearLayout, AppCompatResources.getDrawable(context,R.drawable.alc_back));
 
         holder.name.setOnClickListener(new View.OnClickListener() {
             @Override

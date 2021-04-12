@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.nexm.iupacnomenclatureclassxii.util.ExtDbHelper;
 import com.nexm.iupacnomenclatureclassxii.util.ExtDbHelperPractice;
 import com.nexm.iupacnomenclatureclassxii.util.ExtDbHelperReactions;
@@ -28,8 +30,12 @@ public class IUPAC_APPLICATION extends Application {
     public void onCreate() {
         // TODO Auto-generated method stub
 
-        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
-        MobileAds.initialize(this, "ca-app-pub-6219444241621852~3964680149");
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
         extDbHelper = ExtDbHelper.getInstance(getApplicationContext(), DB_NAME,8);
         extDbHelperReactions = ExtDbHelperReactions.getInstance(getApplicationContext(),DB_NAME_Reactions,6);
         extDbHelperPractice = ExtDbHelperPractice.getInstance(getApplicationContext(),DB_NAME_Practice,1);

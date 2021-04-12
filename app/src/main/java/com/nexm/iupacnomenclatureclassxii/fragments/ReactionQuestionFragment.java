@@ -2,7 +2,7 @@ package com.nexm.iupacnomenclatureclassxii.fragments;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
+
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,10 +10,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.content.res.AppCompatResources;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +18,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.reward.RewardItem;
-import com.google.android.gms.ads.reward.RewardedVideoAd;
-import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+
 import com.nexm.iupacnomenclatureclassxii.IUPAC_APPLICATION;
 import com.nexm.iupacnomenclatureclassxii.R;
 
