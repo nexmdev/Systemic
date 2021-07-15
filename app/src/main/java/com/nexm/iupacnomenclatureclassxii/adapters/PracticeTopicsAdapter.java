@@ -19,7 +19,7 @@ import com.nexm.iupacnomenclatureclassxii.R;
 public class PracticeTopicsAdapter extends RecyclerView.Adapter<PracticeTopicsAdapter.ViewHolder> {
 
     private Context context;
-    private Cursor cursor;
+    private final Cursor cursor;
     private Bitmap bm;
     private static OnItemClickListener listener;
     public interface OnItemClickListener {

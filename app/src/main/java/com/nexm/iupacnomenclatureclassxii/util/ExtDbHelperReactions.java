@@ -18,7 +18,7 @@ public class ExtDbHelperReactions extends SQLiteOpenHelper {
     private SQLiteDatabase database;
     private final Context context;
     private  static ExtDbHelperReactions sInstance;
-    private SharedPreferences sharedPreferences;
+    private final SharedPreferences sharedPreferences;
     public   static synchronized ExtDbHelperReactions getInstance(Context context , String databaseName, int version){
 
         if(sInstance == null){

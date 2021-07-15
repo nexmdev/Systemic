@@ -18,7 +18,7 @@ public class ExtDbHelperPractice extends SQLiteOpenHelper {
     private SQLiteDatabase database;
     private final Context context;
     private  static ExtDbHelperPractice sInstance;
-    private SharedPreferences sharedPreferences;
+    private final SharedPreferences sharedPreferences;
     public   static synchronized ExtDbHelperPractice getInstance(Context context , String databaseName, int version){
 
         if(sInstance == null){

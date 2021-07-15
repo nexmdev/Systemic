@@ -27,7 +27,6 @@ import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
 
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
 import com.google.android.gms.ads.rewarded.RewardItem;
@@ -55,7 +54,7 @@ public class ReactionQuestionFragment extends Fragment  {
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_PARAM3 = "param3";
     private static final String ARG_PARAM4 = "param4";
-
+    private FullScreenContentCallback fullScreenContentCallback;
 
     // TODO: Rename and change types of parameters
     private String selectedAnswer;
@@ -111,6 +110,19 @@ public class ReactionQuestionFragment extends Fragment  {
             Unit =  getArguments().getString(ARG_PARAM4);
 
         }
+        fullScreenContentCallback =
+                new FullScreenContentCallback() {
+                    @Override
+                    public void onAdShowedFullScreenContent() {
+                        // Code to be invoked when the ad showed full screen content.
+                    }
+
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        mRewardedVideoAd = null;
+                        // Code to be invoked when the ad dismissed full screen content.
+                    }
+                };
         if(Unit.matches("Haloalkane")){
             cursor = IUPAC_APPLICATION.reaction_database.rawQuery("SELECT * FROM  " + qTable + " ",null);
             no_q = cursor.getCount();
@@ -135,33 +147,10 @@ public class ReactionQuestionFragment extends Fragment  {
             int c = cursor.getCount();
         }
 
-       setRewardedFullCallback();
+
         loadRewaredAd();
     }
-    private void setRewardedFullCallback() {
-        mRewardedVideoAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-            @Override
-            public void onAdShowedFullScreenContent() {
-                // Called when ad is shown.
 
-                mRewardedVideoAd = null;
-            }
-
-            @Override
-            public void onAdFailedToShowFullScreenContent(AdError adError) {
-                // Called when ad fails to show.
-
-            }
-
-            @Override
-            public void onAdDismissedFullScreenContent() {
-                // Called when ad is dismissed.
-                // Don't forget to set the ad reference to null so you
-                // don't show the ad a second time.
-                mRewardedVideoAd = null;
-            }
-        });
-    }
 
     private void loadRewaredAd() {
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -178,7 +167,7 @@ public class ReactionQuestionFragment extends Fragment  {
                     @Override
                     public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
                         mRewardedVideoAd = rewardedAd;
-
+                        mRewardedVideoAd.setFullScreenContentCallback(fullScreenContentCallback);
                     }
                 });
     }
@@ -470,6 +459,10 @@ public class ReactionQuestionFragment extends Fragment  {
                         next.setText("CONTINUE");
 
                     }
+                    mRewardedVideoAd.setFullScreenContentCallback(null);
+                    mRewardedVideoAd=null;
+
+                    loadRewaredAd();
                 }
             });
         } else {
@@ -489,7 +482,7 @@ public class ReactionQuestionFragment extends Fragment  {
                 currentQ = currentQ + i;
                 questionNoTextView.setText(currentQ +" / "+noOfQuestions);
             }else{
-                questionNoTextView.setText(String.valueOf(i+1) +"/ "+no_q);
+                questionNoTextView.setText((i + 1) +"/ "+no_q);
             }
 
             questionTextTextView.setText(cursor.getString(cursor.getColumnIndex("Qtext")));

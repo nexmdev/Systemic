@@ -22,7 +22,7 @@ public class LauncherActivity extends AppCompatActivity {
 
             if(!isTab)this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
-        getSupportActionBar().hide();
+       // getSupportActionBar().hide();
         final ProgressBar progressBar = findViewById(R.id.progressBar);
         while (IUPAC_APPLICATION.practiceDatabase==null){
             progressBar.setVisibility(View.VISIBLE);

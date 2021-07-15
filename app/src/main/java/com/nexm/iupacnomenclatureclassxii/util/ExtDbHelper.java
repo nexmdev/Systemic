@@ -21,7 +21,7 @@ public class ExtDbHelper extends SQLiteOpenHelper {
     private SQLiteDatabase database;
     private final Context context;
     private  static ExtDbHelper sInstance;
-    private SharedPreferences sharedPreferences;
+    private final SharedPreferences sharedPreferences;
     public   static synchronized ExtDbHelper getInstance(Context context , String databaseName,int version){
 
         if(sInstance == null){
@@ -127,7 +127,7 @@ public class ExtDbHelper extends SQLiteOpenHelper {
             status = String.valueOf(cursor.getInt(cursor.getColumnIndex("Status")));
             while(!cursor.isLast()){
                 cursor.moveToNext();
-                status = status+","+String.valueOf(cursor.getInt(cursor.getColumnIndex("Status")));
+                status = status+","+ cursor.getInt(cursor.getColumnIndex("Status"));
             }
             cursor.close();
             sharedPreferences.edit().putString(topics[i],status).apply();

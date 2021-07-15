@@ -21,7 +21,7 @@ import java.util.List;
 public class ExplanationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private Cursor cursor;
+    private final Cursor cursor;
     private Bitmap bm;
    // private List<UnifiedNativeAd> mNativeAds ;
     private Typeface typeface;

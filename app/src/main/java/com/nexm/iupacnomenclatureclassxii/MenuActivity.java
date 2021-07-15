@@ -31,11 +31,12 @@ public class MenuActivity extends AppCompatActivity  {
     private static final int LEVEL_COMPLETE = 1;
     private int complete = 0;
     private final int[] status = {0,0,0,0,0,0,0,0,8};
-    private int[] startQ = {0,0,0,0,0,0,0,0,8};
-    private int[] noQ = {0,0,0,0,0,0,0,0,8};
+    private final int[] startQ = {0,0,0,0,0,0,0,0,8};
+    private final int[] noQ = {0,0,0,0,0,0,0,0,8};
     private int unlock_rule_position;
     private RewardedAd mRewardedVideoAd;
-    private int id = 0;
+    private final int id = 0;
+    private FullScreenContentCallback fullScreenContentCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,37 +49,27 @@ public class MenuActivity extends AppCompatActivity  {
         }
         AppRater.app_launched(this);
         loadRewaredAd();
-        setRewardedFullCallback();
+        fullScreenContentCallback =
+                new FullScreenContentCallback() {
+                    @Override
+                    public void onAdShowedFullScreenContent() {
+                        // Code to be invoked when the ad showed full screen content.
+                    }
+
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        mRewardedVideoAd = null;
+                        // Code to be invoked when the ad dismissed full screen content.
+                    }
+                };
+       // setRewardedFullCallback();
         TOPIC_NAME = getIntent().getStringExtra("TOPIC");
         TABLE_NAME = TOPIC_NAME+"_Rules";
         cursor = IUPAC_APPLICATION.database.rawQuery("SELECT * FROM  " + TABLE_NAME + " ", null);
 
         setViews();
     }
-    private void setRewardedFullCallback() {
-        mRewardedVideoAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-            @Override
-            public void onAdShowedFullScreenContent() {
-                // Called when ad is shown.
 
-                mRewardedVideoAd = null;
-            }
-
-            @Override
-            public void onAdFailedToShowFullScreenContent(AdError adError) {
-                // Called when ad fails to show.
-
-            }
-
-            @Override
-            public void onAdDismissedFullScreenContent() {
-                // Called when ad is dismissed.
-                // Don't forget to set the ad reference to null so you
-                // don't show the ad a second time.
-                mRewardedVideoAd = null;
-            }
-        });
-    }
     private void loadRewaredAd() {
         AdRequest adRequest = new AdRequest.Builder().build();
 
@@ -94,7 +85,7 @@ public class MenuActivity extends AppCompatActivity  {
                     @Override
                     public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
                         mRewardedVideoAd = rewardedAd;
-
+                        mRewardedVideoAd.setFullScreenContentCallback(fullScreenContentCallback);
                     }
                 });
     }
@@ -236,6 +227,9 @@ public class MenuActivity extends AppCompatActivity  {
                     }
                     unlock_rule_position++;
                     IUPAC_APPLICATION.database.execSQL("UPDATE `"+TABLE_NAME+"` SET `Status`=1  WHERE RuleNo='"+unlock_rule_position+"'");
+                    mRewardedVideoAd.setFullScreenContentCallback(null);
+                    mRewardedVideoAd=null;
+                    loadRewaredAd();
                 }
             });
         }else{

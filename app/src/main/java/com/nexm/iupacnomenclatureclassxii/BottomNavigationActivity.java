@@ -44,7 +44,7 @@ public class BottomNavigationActivity extends AppCompatActivity implements
     private static final int LEVEL_COMPLETE = 1;
     public static int complete = 0;
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    private final BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override

@@ -4,7 +4,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="240dp"
         android:layout_height="210dp"
         app:cardCornerRadius="10dp"
@@ -27,6 +27,6 @@
                 android:text="Alkanes"
                 android:textSize="24sp" />
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </FrameLayout>

@@ -21,7 +21,8 @@ import com.nexm.iupacnomenclatureclassxii.R;
 public class ReactionsTopicsAdapter extends RecyclerView.Adapter<ReactionsTopicsAdapter.ViewHolder> {
     private Context context;
     private Cursor cursor;
-    private String Unit,Topic;
+    private final String Unit;
+    private final String Topic;
     private int i ;
     private static OnItemClickListener listener;
     public interface OnItemClickListener {

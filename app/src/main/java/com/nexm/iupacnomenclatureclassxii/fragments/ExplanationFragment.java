@@ -54,7 +54,7 @@ public class ExplanationFragment extends Fragment {
     private AdLoader adLoader;
 
     // List of native ads that have been successfully loaded.
-    private List<UnifiedNativeAd> mNativeAds = new ArrayList<>();
+    private final List<UnifiedNativeAd> mNativeAds = new ArrayList<>();
 
     private OnFragmentInteractionListener mListener;
 

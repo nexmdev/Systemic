@@ -1,7 +1,9 @@
 package com.nexm.iupacnomenclatureclassxii.fragments;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,6 +14,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -33,15 +37,18 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
+import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 import com.nexm.iupacnomenclatureclassxii.IUPAC_APPLICATION;
 import com.nexm.iupacnomenclatureclassxii.R;
 import com.nexm.iupacnomenclatureclassxii.util.CONSTANTS;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Objects;
 
 
-public class TestFragment extends Fragment  {
+public class TestFragment extends Fragment implements OnUserEarnedRewardListener  {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "TABLE";
@@ -58,7 +65,8 @@ public class TestFragment extends Fragment  {
     AnimationDrawable myFrameAnimation2;
     private OnFragmentInteractionListener mListener;
     private RewardedAd mRewardedVideoAd;
-
+    private FullScreenContentCallback fullScreenContentCallback;
+    private RewardedInterstitialAd rewardedInterstitialAd;
 
     public TestFragment() {
         // Required empty public constructor
@@ -91,40 +99,30 @@ public class TestFragment extends Fragment  {
             test_table = getArguments().getString("TEST_TABLE_NAME");
             first_q = getArguments().getInt(("START_QUESTION"));
         }
-        setRewardedFullCallback();
+       // setRewardedFullCallback();
 
         loadInterstitialAd();
         loadRewaredAd();
+        fullScreenContentCallback =
+                new FullScreenContentCallback() {
+                    @Override
+                    public void onAdShowedFullScreenContent() {
+                        // Code to be invoked when the ad showed full screen content.
+                    }
+
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        mRewardedVideoAd = null;
+                        // Code to be invoked when the ad dismissed full screen content.
+                    }
+                };
 
         cursor = IUPAC_APPLICATION.database.rawQuery("SELECT * FROM  " + test_table + " ",null);
         cursor.moveToFirst();
 
     }
 
-    private void setRewardedFullCallback() {
-        mRewardedVideoAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-            @Override
-            public void onAdShowedFullScreenContent() {
-                // Called when ad is shown.
 
-                mRewardedVideoAd = null;
-            }
-
-            @Override
-            public void onAdFailedToShowFullScreenContent(AdError adError) {
-                // Called when ad fails to show.
-
-            }
-
-            @Override
-            public void onAdDismissedFullScreenContent() {
-                // Called when ad is dismissed.
-                // Don't forget to set the ad reference to null so you
-                // don't show the ad a second time.
-               mRewardedVideoAd = null;
-            }
-        });
-    }
 
     private void loadRewaredAd() {
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -141,7 +139,7 @@ public class TestFragment extends Fragment  {
                     @Override
                     public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
                         mRewardedVideoAd = rewardedAd;
-
+                        mRewardedVideoAd.setFullScreenContentCallback(fullScreenContentCallback);
                     }
                 });
     }
@@ -276,7 +274,7 @@ public class TestFragment extends Fragment  {
                         cursor.moveToNext();
                         i++;
                         if(cursor.isAfterLast()|| i == no_q){
-                            if(IUPAC_APPLICATION.database.isOpen()){
+                            if(IUPAC_APPLICATION.database.isOpen() && i==no_q && !test_table.endsWith("_Extra")){
                                 if(status_current != 2){
                                     IUPAC_APPLICATION.database.execSQL("UPDATE `"+rule_table+"` SET `Status`=2  WHERE RuleNo='"+rule_no+"'");
                                 }
@@ -291,10 +289,16 @@ public class TestFragment extends Fragment  {
                             }
                             cursor.close();
                             getActivity().setResult(Activity.RESULT_OK);
-                            if (mInterstitialAd != null) {
-                                mInterstitialAd.show(getActivity());
+                            if(!test_table.endsWith("_Extra")){
+                                showMoreQuestionDialog();
+                            }else {
+                                if (mInterstitialAd != null) {
+                                    mInterstitialAd.show(getActivity());
+                                }
+
+                                getActivity().finish();
                             }
-                            getActivity().finish();
+
                         }else{
                             setQuestion();
                             setDefaultViews();
@@ -309,6 +313,8 @@ public class TestFragment extends Fragment  {
             public void onClick(View view) {
                 if (mRewardedVideoAd!=null){
                     showRewardedAd();
+                }else{
+                    loadRewaredAd();
                 }
             }
             }
@@ -316,6 +322,73 @@ public class TestFragment extends Fragment  {
 
         return view;
     }
+
+    private void showMoreQuestionDialog() {
+        final Dialog dialog;
+
+        dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.more_q_dialog);
+
+        final TextView exit = (dialog).findViewById(R.id.more_q_no_thanks);
+
+
+        exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mInterstitialAd != null) {
+                    mInterstitialAd.show(getActivity());
+                }
+                dialog.dismiss();
+                getActivity().finish();
+            }
+        });
+        RewardedInterstitialAd.load(getActivity(), CONSTANTS.REWARDED_INTERSTITIAL_TEST_FRAGMENT,
+                new AdRequest.Builder().build(),  new RewardedInterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(RewardedInterstitialAd ad) {
+                        rewardedInterstitialAd = ad;
+                        rewardedInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                            /** Called when the ad failed to show full screen content. */
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+
+                            }
+
+                            /** Called when ad showed the full screen content. */
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                            }
+
+                            /** Called when full screen content is dismissed. */
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+
+                            }
+                        });
+                        dialog.dismiss();
+                        rewardedInterstitialAd.show( getActivity(), TestFragment.this);
+
+                    }
+                    @Override
+                    public void onAdFailedToLoad(LoadAdError loadAdError) {
+                        if (mInterstitialAd != null) {
+                            mInterstitialAd.show(getActivity());
+                        }
+                        dialog.dismiss();
+                        getActivity().finish();
+                    }
+                });
+
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+
+        Objects.requireNonNull(dialog.getWindow()).setLayout(WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+
+    }
+
 
     private void showRewardedAd() {
         if (mRewardedVideoAd != null) {
@@ -350,6 +423,9 @@ public class TestFragment extends Fragment  {
                         animateLeds(option4);
                         next.setText("CONTINUE");
                     }
+                    mRewardedVideoAd.setFullScreenContentCallback(null);
+                    mRewardedVideoAd=null;
+                    loadRewaredAd();
                 }
             });
         } else {
@@ -458,7 +534,7 @@ public class TestFragment extends Fragment  {
 
         if(cursor!=null && !cursor.isAfterLast() ){
 
-            questionNoTextView.setText(String.valueOf(i+1) +"/ "+no_q);
+            questionNoTextView.setText((i + 1) +"/ "+no_q);
             questionTextTextView.setText(cursor.getString(cursor.getColumnIndex("QT")));
             byte[] b = cursor.getBlob(cursor.getColumnIndex("QI"));
             Bitmap bitmap = BitmapFactory.decodeByteArray(b,0,b.length);
@@ -513,10 +589,19 @@ public class TestFragment extends Fragment  {
        // cursor.close();
     }
 
+    @Override
+    public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
+       // cursor.close();
+        test_table = test_table+"_Extra";
+        rule_no -=2;
+        int f= (rule_no-1)*3;
+        cursor = IUPAC_APPLICATION.database.rawQuery("SELECT * FROM  " + test_table + "  LIMIT "+f+", 3",null);
+        cursor.moveToFirst();
+        no_q +=3;
 
-
-
-
+        setDefaultViews();
+        setQuestion();
+    }
 
 
     public interface OnFragmentInteractionListener {
