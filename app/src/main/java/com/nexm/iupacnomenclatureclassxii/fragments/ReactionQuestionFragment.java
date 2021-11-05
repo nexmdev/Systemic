@@ -29,6 +29,8 @@ import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
@@ -54,6 +56,7 @@ public class ReactionQuestionFragment extends Fragment  {
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_PARAM3 = "param3";
     private static final String ARG_PARAM4 = "param4";
+    private InterstitialAd mInterstitialAd;
     private FullScreenContentCallback fullScreenContentCallback;
 
     // TODO: Rename and change types of parameters
@@ -147,10 +150,29 @@ public class ReactionQuestionFragment extends Fragment  {
             int c = cursor.getCount();
         }
 
-
+        loadInterstitialAd();
         loadRewaredAd();
     }
+    private void loadInterstitialAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
 
+        InterstitialAd.load(getActivity(), CONSTANTS.INTERSTITIAL_ID_TEST_FRAGMENT, adRequest, new InterstitialAdLoadCallback() {
+            @Override
+            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                // The mInterstitialAd reference will be null until
+                // an ad is loaded.
+                mInterstitialAd = interstitialAd;
+
+            }
+
+            @Override
+            public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                // Handle the error
+
+                mInterstitialAd = null;
+            }
+        });
+    }
 
     private void loadRewaredAd() {
         AdRequest adRequest = new AdRequest.Builder().build();
@@ -318,9 +340,9 @@ public class ReactionQuestionFragment extends Fragment  {
                                 }
                                 cursor.close();
                                 getActivity().setResult(Activity.RESULT_OK);
-                            /*if (mInterstitialAd.isLoaded()) {
-                                mInterstitialAd.show();
-                            }*/
+                                if (mInterstitialAd != null) {
+                                    mInterstitialAd.show(getActivity());
+                                }
                                 getActivity().finish();
                             }
 
@@ -540,3 +562,4 @@ public class ReactionQuestionFragment extends Fragment  {
         void onQuestionFinished(Uri uri);
     }
 }
+
